@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace FixtureGenerator
 {
-    public class Gameweek
+    public class MatchDay
     {
         private readonly int _week;
         private readonly List<Fixture> _fixtures;
 
-        public Gameweek(int week, List<Fixture> fixtures)
+        public MatchDay(int week, List<Fixture> fixtures)
         {
             _week = week;
             _fixtures = fixtures;
         }
 
-        public List<Fixture> Fixtures
+        public IEnumerable<Fixture> Fixtures
         {
             get { return _fixtures; }
         }

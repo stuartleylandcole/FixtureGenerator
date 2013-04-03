@@ -7,15 +7,15 @@ namespace FixtureGenerator.Criteria
 {
     public abstract class CriteriaBase
     {
-        private readonly List<Gameweek> _gameweeks;
+        private readonly Season _season;
 
-        protected CriteriaBase(List<Gameweek> gameweeks)
+        protected CriteriaBase(Season season)
         {
-            _gameweeks = gameweeks;
+            _season = season;
         }
 
         public abstract string Description { get; }
-        protected abstract Func<Gameweek, bool> Criteria { get; }
+        protected abstract Func<MatchDay, bool> Criteria { get; }
         protected abstract int Multiplier { get; }
         protected abstract bool Mandatory { get; }
 
@@ -44,7 +44,7 @@ namespace FixtureGenerator.Criteria
 
         private int NumberOfMatches
         {
-            get { return _gameweeks.Count(Criteria); }
+            get { return _season.MatchDays.Count(Criteria); }
         }
     }
 }

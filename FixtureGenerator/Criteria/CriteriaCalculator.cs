@@ -4,11 +4,11 @@ namespace FixtureGenerator.Criteria
 {
     public class CriteriaCalculator
     {
-        private readonly List<Gameweek> _gameweeks;
+        private readonly Season _season;
 
-        public CriteriaCalculator(List<Gameweek> gameweeks)
+        public CriteriaCalculator(Season season)
         {
-            _gameweeks = gameweeks;
+            _season = season;
         }
 
         public CriteriaCalculatorResult Calculate()
@@ -34,7 +34,7 @@ namespace FixtureGenerator.Criteria
         private IEnumerable<CriteriaBase> GetAllCriteria()
         {
             var criteria = new List<CriteriaBase>();
-            criteria.Add(new SuperSundayCriteria(_gameweeks));
+            criteria.Add(new SuperSundayCriteria(_season));
 
             return criteria;
         }

@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace FixtureGenerator.Criteria
 {
     public class SuperSundayCriteria : CriteriaBase
     {
-        public SuperSundayCriteria(List<Gameweek> gameweeks) : base(gameweeks)
+        public SuperSundayCriteria(Season season)
+            : base(season)
         {
         }
 
@@ -15,10 +15,10 @@ namespace FixtureGenerator.Criteria
             get { return "Super Sunday"; }
         }
 
-        protected override Func<Gameweek, bool> Criteria
+        protected override Func<MatchDay, bool> Criteria
         {
-            get { return gameweek =>
-                gameweek.Fixtures.Count(
+            get { return matchDay =>
+                matchDay.Fixtures.Count(
                     fixture =>
                     fixture.HomeTeam.TableGrouping.Ordering == 1 && fixture.AwayTeam.TableGrouping.Ordering == 1) > 1; }
         }

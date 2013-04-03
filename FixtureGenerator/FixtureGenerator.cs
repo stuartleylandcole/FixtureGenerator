@@ -16,20 +16,20 @@ namespace FixtureGenerator
             _numberOfTimesToPlayEachTeam = numberOfTimesToPlayEachTeam;
         }
 
-        public List<Gameweek> GenerateFixtures()
+        public Season GenerateFixtures()
         {
-            var gamesweeks = new List<Gameweek>();
+            var matchDays = new List<MatchDay>();
             int numberOfGamesWeeks = (_teams.Count * _numberOfTimesToPlayEachTeam ) - _numberOfTimesToPlayEachTeam;
 
             for (int i = 0; i <= numberOfGamesWeeks; i++)
             {
-                gamesweeks.Add(GenerateFixturesForGameweek(i));
+                matchDays.Add(GenerateFixturesForMatchDay(i));
             }
 
-            return gamesweeks;
+            return new Season(matchDays);
         }
 
-        private Gameweek GenerateFixturesForGameweek(int week)
+        private MatchDay GenerateFixturesForMatchDay(int week)
         {
             var fixtures = new List<Fixture>();
 
@@ -41,7 +41,7 @@ namespace FixtureGenerator
                 fixtures.Add(new Fixture(homeTeam, awayTeam));
             }
 
-            return new Gameweek(week, fixtures);
+            return new MatchDay(week, fixtures);
         }
 
         private Team GetTeam(List<Team> teams)

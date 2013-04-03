@@ -10,10 +10,10 @@ namespace FixtureGenerator
         {
             var teams = GetTeams();
             var generator = new FixtureGenerator(teams, 2);
-            var fixtures = generator.GenerateFixtures();
-            DisplayFixtures(fixtures);
+            var season = generator.GenerateFixtures();
+            DisplayFixtures(season);
 
-            var calculator = new CriteriaCalculator(fixtures);
+            var calculator = new CriteriaCalculator(season);
             var result = calculator.Calculate();
             DisplayResults(result);
 
@@ -63,12 +63,12 @@ namespace FixtureGenerator
             return teams;
         }
 
-        private static void DisplayFixtures(List<Gameweek> fixtures)
+        private static void DisplayFixtures(Season season)
         {
             string description = "";
-            foreach (Gameweek gameweek in fixtures)
+            foreach (MatchDay matchDay in season.MatchDays)
             {
-                description += gameweek.GetDescription() + Environment.NewLine;
+                description += matchDay.GetDescription() + Environment.NewLine;
             }
 
             Console.Write(description);
