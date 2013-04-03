@@ -1,19 +1,30 @@
 ﻿using System.Collections.Generic;
 using System;
 using FixtureGenerator.Criteria;
+using System.Linq;
 
 namespace FixtureGenerator
 {
     class Program
     {
+        private const int NumberOfSeasons = 1000;
+
         static void Main(string[] args)
         {
             var teams = GetTeams();
             var generator = new FixtureGenerator(teams, 2);
-            var season = generator.GenerateFixtures();
-            DisplayFixtures(season);
 
-            var calculator = new CriteriaCalculator(season);
+            var seasons = new List<Season>();
+            for (int i = 0; i < NumberOfSeasons; i++)
+            {
+                seasons.Add(generator.GenerateFixtures());
+            }
+
+            var bestSeason = seasons.OrderByDescending(season => new CriteriaCalculator(season).Calculate().Score).FirstOrDefault();
+
+            DisplayFixtures(bestSeason);
+
+            var calculator = new CriteriaCalculator(bestSeason);
             var result = calculator.Calculate();
             DisplayResults(result);
 
