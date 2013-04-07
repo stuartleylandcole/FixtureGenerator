@@ -2,7 +2,7 @@
 
 namespace FixtureGenerator
 {
-    public class Season
+    public class Season : ICrossoverable
     {
         private readonly IEnumerable<MatchDay> _matchDays;
 
@@ -12,6 +12,11 @@ namespace FixtureGenerator
         }
 
         public IEnumerable<MatchDay> MatchDays
+        {
+            get { return _matchDays; }
+        }
+
+        public IEnumerable<MatchDay> Chromosomes
         {
             get { return _matchDays; }
         }

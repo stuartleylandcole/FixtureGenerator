@@ -3,13 +3,8 @@ using System.Linq;
 
 namespace FixtureGenerator.Criteria
 {
-    public class SuperSundayCriteria : CriteriaBase
+    public class SuperSundayCriteria : CriteriaBase<Season>
     {
-        public SuperSundayCriteria(Season season)
-            : base(season)
-        {
-        }
-
         public override string Description
         {
             get { return "Super Sunday"; }

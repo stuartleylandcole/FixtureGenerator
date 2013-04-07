@@ -3,15 +3,17 @@ using System.Linq;
 
 namespace FixtureGenerator.Criteria
 {
-    public class CriteriaCalculatorResult
+    public class CriteriaCalculatorResult<T> where T : ICrossoverable
     {
-        private readonly List<CriteriaBase> _matchingCriteria;
-        private readonly List<CriteriaBase> _failedCriteria;
+        private readonly List<CriteriaBase<T>> _matchingCriteria;
+        private readonly List<CriteriaBase<T>> _failedCriteria;
+        private readonly int _score;
 
-        public CriteriaCalculatorResult(List<CriteriaBase> matchingCriteria, List<CriteriaBase> failedCriteria)
+        public CriteriaCalculatorResult(List<CriteriaBase<T>> matchingCriteria, List<CriteriaBase<T>> failedCriteria, int score)
         {
             _matchingCriteria = matchingCriteria;
             _failedCriteria = failedCriteria;
+            _score = score;
         }
 
         public bool IsValid
@@ -21,15 +23,15 @@ namespace FixtureGenerator.Criteria
 
         public int Score
         {
-            get { return _matchingCriteria.Sum(c => c.Score); }
+            get { return _score; }
         }
 
-        public List<CriteriaBase> MatchingCriteria
+        public List<CriteriaBase<T>> MatchingCriteria
         {
             get { return _matchingCriteria; }
         }
 
-        public List<CriteriaBase> FailedCriteria
+        public List<CriteriaBase<T>> FailedCriteria
         {
             get { return _failedCriteria; }
         }

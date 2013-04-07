@@ -2,12 +2,15 @@
 using System;
 using FixtureGenerator.Criteria;
 using System.Linq;
+using FixtureGenerator.CrossoverStrategy;
 
 namespace FixtureGenerator
 {
     class Program
     {
         private const int NumberOfSeasons = 1000;
+        private const int NumberOfGenerations = 100;
+        private const int NumberOfChildrenPerGeneration = 200;
 
         static void Main(string[] args)
         {
@@ -20,11 +23,23 @@ namespace FixtureGenerator
                 seasons.Add(generator.GenerateFixtures());
             }
 
-            var bestSeason = seasons.OrderByDescending(season => new CriteriaCalculator(season).Calculate().Score).FirstOrDefault();
+            var criteria = GetCriteria();
+            var seasonsCrossedOver = new List<Season>(seasons);
+            for (int i = 0; i < NumberOfGenerations; i++)
+            {
+                var simpleCrossover = new SimpleCrossoverStrategy<Season>();
+                var populationGenerator = new PopulationGenerator<Season>(seasonsCrossedOver, NumberOfChildrenPerGeneration, simpleCrossover);
+                seasonsCrossedOver = populationGenerator.Generate();
+                string statistics = populationGenerator.GetStatistics(criteria);
+                Console.WriteLine("Statistics for generation " + (i + 1));
+                Console.WriteLine(statistics);
+            }
+
+            var bestSeason = seasonsCrossedOver.OrderByDescending(season => new CriteriaCalculator<Season>(season, criteria).Calculate().Score).FirstOrDefault();
 
             DisplayFixtures(bestSeason);
 
-            var calculator = new CriteriaCalculator(bestSeason);
+            var calculator = new CriteriaCalculator<Season>(bestSeason, criteria);
             var result = calculator.Calculate();
             DisplayResults(result);
 
@@ -74,6 +89,14 @@ namespace FixtureGenerator
             return teams;
         }
 
+        private static IEnumerable<CriteriaBase<Season>> GetCriteria()
+        {
+            var criteria = new List<CriteriaBase<Season>>();
+            criteria.Add(new SuperSundayCriteria());
+
+            return criteria;
+        }
+
         private static void DisplayFixtures(Season season)
         {
             string description = "";
@@ -85,7 +108,7 @@ namespace FixtureGenerator
             Console.Write(description);
         }
 
-        private static void DisplayResults(CriteriaCalculatorResult result)
+        private static void DisplayResults(CriteriaCalculatorResult<Season> result)
         {
             Console.WriteLine("Results" + Environment.NewLine);
 

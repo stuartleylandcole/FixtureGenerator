@@ -36,15 +36,15 @@ namespace FixtureGenerator
             var teams = new List<Team>(_teams);
             while (teams.Count > 0)
             {
-                Team homeTeam = GetTeam(teams);
-                Team awayTeam = GetTeam(teams);
+                Team homeTeam = SelectTeam(teams);
+                Team awayTeam = SelectTeam(teams);
                 fixtures.Add(new Fixture(homeTeam, awayTeam));
             }
 
             return new MatchDay(week, fixtures);
         }
 
-        private Team GetTeam(List<Team> teams)
+        private Team SelectTeam(List<Team> teams)
         {
             int teamIndex = Random.Next(0, teams.Count);
             Team team = teams[teamIndex];

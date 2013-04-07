@@ -2,23 +2,28 @@
 
 namespace FixtureGenerator.Criteria
 {
-    public class CriteriaCalculator
+    public class CriteriaCalculator<T> where T : ICrossoverable
     {
-        private readonly Season _season;
+        private readonly T _entity;
+        private readonly IEnumerable<CriteriaBase<T>> _criteria;
 
-        public CriteriaCalculator(Season season)
+        public CriteriaCalculator(T entity, IEnumerable<CriteriaBase<T>> criteria)
         {
-            _season = season;
+            _entity = entity;
+            _criteria = criteria;
         }
 
-        public CriteriaCalculatorResult Calculate()
+        public CriteriaCalculatorResult<T> Calculate()
         {
-            var matchedCriteria = new List<CriteriaBase>();
-            var failedCriteria = new List<CriteriaBase>();
-            var allCriteria = GetAllCriteria();
-            foreach (var criteria in allCriteria)
+            var matchedCriteria = new List<CriteriaBase<T>>();
+            var failedCriteria = new List<CriteriaBase<T>>();
+            int score = 0;
+
+            foreach (var criteria in _criteria)
             {
-                if (criteria.PassesCriteria)
+                score += criteria.GetScore(_entity);
+
+                if (criteria.PassesCriteria(_entity))
                 {
                     matchedCriteria.Add(criteria);
                 }
@@ -28,15 +33,7 @@ namespace FixtureGenerator.Criteria
                 }
             }
 
-            return new CriteriaCalculatorResult(matchedCriteria, failedCriteria);
-        }
-
-        private IEnumerable<CriteriaBase> GetAllCriteria()
-        {
-            var criteria = new List<CriteriaBase>();
-            criteria.Add(new SuperSundayCriteria(_season));
-
-            return criteria;
+            return new CriteriaCalculatorResult<T>(matchedCriteria, failedCriteria, score);
         }
     }
 }
