@@ -3,6 +3,7 @@ using System;
 using FixtureGenerator.Criteria;
 using System.Linq;
 using FixtureGenerator.CrossoverStrategy;
+using FixtureGenerator.SelectionStrategy;
 
 namespace FixtureGenerator
 {
@@ -28,7 +29,8 @@ namespace FixtureGenerator
             for (int i = 0; i < NumberOfGenerations; i++)
             {
                 var simpleCrossover = new SimpleCrossoverStrategy<Season>();
-                var populationGenerator = new PopulationGenerator<Season>(seasonsCrossedOver, NumberOfChildrenPerGeneration, simpleCrossover);
+                var simpleSelection = new SimpleSelectionStrategy<Season>();
+                var populationGenerator = new PopulationGenerator<Season>(seasonsCrossedOver, NumberOfChildrenPerGeneration, simpleCrossover, simpleSelection);
                 seasonsCrossedOver = populationGenerator.Generate();
                 string statistics = populationGenerator.GetStatistics(criteria);
                 Console.WriteLine("Statistics for generation " + (i + 1));

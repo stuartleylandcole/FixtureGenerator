@@ -58,6 +58,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Season.cs" />
+    <Compile Include="SelectionStrategy\ISelectionStrategy.cs" />
+    <Compile Include="SelectionStrategy\SimpleSelectionStrategy.cs" />
     <Compile Include="TableGrouping.cs" />
     <Compile Include="Team.cs" />
   </ItemGroup>
