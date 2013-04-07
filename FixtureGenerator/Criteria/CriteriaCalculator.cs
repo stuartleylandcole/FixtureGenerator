@@ -21,7 +21,7 @@ namespace FixtureGenerator.Criteria
 
             foreach (var criteria in _criteria)
             {
-                score += criteria.GetScore(_entity);
+                score += criteria.CalculateScore(_entity);
 
                 if (criteria.PassesCriteria(_entity))
                 {

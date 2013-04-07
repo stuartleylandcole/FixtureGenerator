@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FixtureGenerator.Criteria
 {
     public abstract class CriteriaBase<T> where T : ICrossoverable
     {
-        protected CriteriaBase()
-        {}
-
         public abstract string Description { get; }
         protected abstract Func<MatchDay, bool> Criteria { get; }
         protected abstract int Multiplier { get; }
@@ -17,21 +12,16 @@ namespace FixtureGenerator.Criteria
 
         public bool PassesCriteria(T season)
         {
-            bool matchesFound = NumberOfMatches(season) > 0;
-            if (Mandatory && !matchesFound)
-            {
-                return false;
-            }
-
-            return true;
+            var matchesFound = GetNumberOfCriteriaMatches(season) > 0;
+            return !Mandatory || matchesFound;
         }
 
-        public int GetScore(T season)
+        public int CalculateScore(T season)
         {
-            return NumberOfMatches(season) * Multiplier;
+            return GetNumberOfCriteriaMatches(season) * Multiplier;
         }
 
-        private int NumberOfMatches(T season)
+        private int GetNumberOfCriteriaMatches(T season)
         {
             return season.Chromosomes.Count(Criteria);
         }

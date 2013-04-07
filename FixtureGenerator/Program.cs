@@ -54,47 +54,46 @@ namespace FixtureGenerator
             var lowerMidTable = new TableGrouping("Lower-mid table", 4);
             var relegationCandidates = new TableGrouping("Relegation candidates", 5);
 
-            var teams = new List<Team>();
+            return new List<Team>
+                {
+                    //1-4
+                    new Team("Manchester United", topFourGrouping),
+                    new Team("Manchester City", topFourGrouping),
+                    new Team("Chelsea", topFourGrouping),
+                    new Team("Arsenal", topFourGrouping),
 
-            //1-4
-            teams.Add(new Team("Manchester United", topFourGrouping));
-            teams.Add(new Team("Manchester City", topFourGrouping));
-            teams.Add(new Team("Chelsea", topFourGrouping));
-            teams.Add(new Team("Arsenal", topFourGrouping));
+                    //5-7
+                    new Team("Tottenham", europaLeagueGrouping),
+                    new Team("Everton", europaLeagueGrouping),
+                    new Team("Liverpool", europaLeagueGrouping),
 
-            //5-7
-            teams.Add(new Team("Tottenham", europaLeagueGrouping));
-            teams.Add(new Team("Everton", europaLeagueGrouping));
-            teams.Add(new Team("Liverpool", europaLeagueGrouping));
+                    //8-12
+                    new Team("West Brom", upperMidTable),
+                    new Team("Swansea", upperMidTable),
+                    new Team("Fulham", upperMidTable),
+                    new Team("Stoke", upperMidTable),
+                    new Team("Newcastle", upperMidTable),
 
-            //8-12
-            teams.Add(new Team("West Brom", upperMidTable));
-            teams.Add(new Team("Swansea", upperMidTable));
-            teams.Add(new Team("Fulham", upperMidTable));
-            teams.Add(new Team("Stoke", upperMidTable));
-            teams.Add(new Team("Newcastle", upperMidTable));
+                    //13-16
+                    new Team("West Ham", lowerMidTable),
+                    new Team("Southampton", lowerMidTable),
+                    new Team("Norwich", lowerMidTable),
+                    new Team("Sunderland", lowerMidTable),
 
-            //13-16
-            teams.Add(new Team("West Ham", lowerMidTable));
-            teams.Add(new Team("Southampton", lowerMidTable));
-            teams.Add(new Team("Norwich", lowerMidTable));
-            teams.Add(new Team("Sunderland", lowerMidTable));
-
-            //17-20
-            teams.Add(new Team("Wigan", relegationCandidates));
-            teams.Add(new Team("Aston Villa", relegationCandidates));
-            teams.Add(new Team("QPR", relegationCandidates));
-            teams.Add(new Team("Reading", relegationCandidates));
-
-            return teams;
+                    //17-20
+                    new Team("Wigan", relegationCandidates),
+                    new Team("Aston Villa", relegationCandidates),
+                    new Team("QPR", relegationCandidates),
+                    new Team("Reading", relegationCandidates)
+                };
         }
 
-        private static IEnumerable<CriteriaBase<Season>> GetCriteria()
+        private static IList<CriteriaBase<Season>> GetCriteria()
         {
-            var criteria = new List<CriteriaBase<Season>>();
-            criteria.Add(new SuperSundayCriteria());
-
-            return criteria;
+            return new List<CriteriaBase<Season>>
+                {
+                    new SuperSundayCriteria()
+                };
         }
 
         private static void DisplayFixtures(Season season)
