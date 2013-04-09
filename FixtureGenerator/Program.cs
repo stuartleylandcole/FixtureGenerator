@@ -41,9 +41,6 @@ namespace FixtureGenerator
 
             var bestSeason = seasonsCrossedOver.OrderByDescending(season => new CriteriaCalculator<Season, MatchDay>(season, criteria).Calculate().Score).FirstOrDefault();
 
-            Func<MatchDay, bool> predicate = matchday => matchday.GetDescription() == "Test";
-            bestSeason.MatchDays.Count(predicate);
-
             DisplayFixtures(bestSeason);
 
             var calculator = new CriteriaCalculator<Season, MatchDay>(bestSeason, criteria);
