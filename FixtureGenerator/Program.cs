@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System;
-using FixtureGenerator.Criteria;
 using System.Linq;
-using FixtureGenerator.CrossoverStrategy;
-using FixtureGenerator.SelectionStrategy;
+using FixtureGenerator.Criteria;
+using GeneticAlgorithm.Criteria;
+using GeneticAlgorithm.CrossoverStrategy;
+using GeneticAlgorithm.SelectionStrategy;
+using GeneticAlgorithm;
 
 namespace FixtureGenerator
 {
@@ -28,20 +30,23 @@ namespace FixtureGenerator
             var seasonsCrossedOver = new List<Season>(seasons);
             for (int i = 0; i < NumberOfGenerations; i++)
             {
-                var simpleCrossover = new SimpleCrossoverStrategy<Season>();
-                var simpleSelection = new SimpleSelectionStrategy<Season>();
-                var populationGenerator = new PopulationGenerator<Season>(seasonsCrossedOver, NumberOfChildrenPerGeneration, simpleCrossover, simpleSelection);
+                var simpleCrossover = new SimpleCrossoverStrategy<Season, MatchDay>();
+                var simpleSelection = new SimpleSelectionStrategy<Season, MatchDay>();
+                var populationGenerator = new PopulationGenerator<Season, MatchDay>(seasonsCrossedOver, NumberOfChildrenPerGeneration, simpleCrossover, simpleSelection);
                 seasonsCrossedOver = populationGenerator.Generate();
                 string statistics = populationGenerator.GetStatistics(criteria);
                 Console.WriteLine("Statistics for generation " + (i + 1));
                 Console.WriteLine(statistics);
             }
 
-            var bestSeason = seasonsCrossedOver.OrderByDescending(season => new CriteriaCalculator<Season>(season, criteria).Calculate().Score).FirstOrDefault();
+            var bestSeason = seasonsCrossedOver.OrderByDescending(season => new CriteriaCalculator<Season, MatchDay>(season, criteria).Calculate().Score).FirstOrDefault();
+
+            Func<MatchDay, bool> predicate = matchday => matchday.GetDescription() == "Test";
+            bestSeason.MatchDays.Count(predicate);
 
             DisplayFixtures(bestSeason);
 
-            var calculator = new CriteriaCalculator<Season>(bestSeason, criteria);
+            var calculator = new CriteriaCalculator<Season, MatchDay>(bestSeason, criteria);
             var result = calculator.Calculate();
             DisplayResults(result);
 
@@ -90,9 +95,9 @@ namespace FixtureGenerator
                 };
         }
 
-        private static IList<CriteriaBase<Season>> GetCriteria()
+        private static IList<CriteriaBase<Season, MatchDay>> GetCriteria()
         {
-            return new List<CriteriaBase<Season>>
+            return new List<CriteriaBase<Season, MatchDay>>
                 {
                     new SuperSundayCriteria()
                 };
@@ -109,7 +114,7 @@ namespace FixtureGenerator
             Console.Write(description);
         }
 
-        private static void DisplayResults(CriteriaCalculatorResult<Season> result)
+        private static void DisplayResults(CriteriaCalculatorResult<Season, MatchDay> result)
         {
             Console.WriteLine("Results" + Environment.NewLine);
 

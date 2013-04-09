@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using GeneticAlgorithm;
 
 namespace FixtureGenerator
 {
-    public class Season : ICrossoverable
+    public class Season : IOrganism<MatchDay>
     {
         private readonly IEnumerable<MatchDay> _matchDays;
 

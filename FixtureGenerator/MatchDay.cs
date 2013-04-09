@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using GeneticAlgorithm;
 
 namespace FixtureGenerator
 {
-    public class MatchDay
+    public class MatchDay : IChromosome
     {
         private readonly int _week;
         private readonly List<Fixture> _fixtures;
@@ -29,6 +30,11 @@ namespace FixtureGenerator
             }
 
             return desc;
+        }
+
+        public IEnumerable<IGene> Genes
+        {
+            get { return Fixtures; }
         }
     }
 }

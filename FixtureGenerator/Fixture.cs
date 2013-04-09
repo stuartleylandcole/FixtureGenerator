@@ -1,6 +1,8 @@
-﻿namespace FixtureGenerator
+﻿using GeneticAlgorithm;
+
+namespace FixtureGenerator
 {
-    public class Fixture
+    public class Fixture : IGene
     {
         private readonly Team _homeTeam;
         private readonly Team _awayTeam;

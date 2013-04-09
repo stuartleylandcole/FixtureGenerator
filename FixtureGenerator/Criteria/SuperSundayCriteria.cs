@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
+using GeneticAlgorithm.Criteria;
 
 namespace FixtureGenerator.Criteria
 {
-    public class SuperSundayCriteria : CriteriaBase<Season>
+    public class SuperSundayCriteria : CriteriaBase<Season, MatchDay>
     {
         public override string Description
         {
