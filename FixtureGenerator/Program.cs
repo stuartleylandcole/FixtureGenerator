@@ -27,12 +27,12 @@ namespace FixtureGenerator
             }
 
             var criteria = GetCriteria();
+            var selectionStrategy = new TournamentSelection<Season, MatchDay>(0.8, criteria);
             var seasonsCrossedOver = new List<Season>(seasons);
             for (int i = 0; i < NumberOfGenerations; i++)
             {
                 var simpleCrossover = new SimpleCrossoverStrategy<Season, MatchDay>();
-                var simpleSelection = new SimpleSelectionStrategy<Season, MatchDay>();
-                var populationGenerator = new PopulationGenerator<Season, MatchDay>(seasonsCrossedOver, NumberOfChildrenPerGeneration, simpleCrossover, simpleSelection);
+                var populationGenerator = new PopulationGenerator<Season, MatchDay>(seasonsCrossedOver, NumberOfChildrenPerGeneration, simpleCrossover, selectionStrategy);
                 seasonsCrossedOver = populationGenerator.Generate();
                 string statistics = populationGenerator.GetStatistics(criteria);
                 Console.WriteLine("Statistics for generation " + (i + 1));
