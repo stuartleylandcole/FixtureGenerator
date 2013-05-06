@@ -27,5 +27,18 @@ namespace FixtureGenerator
         {
             return _homeTeam.Name + " v " + _awayTeam.Name;
         }
+
+        public bool IsSameAs(IGene other)
+        {
+            var otherFixture = other as Fixture;
+            if (otherFixture == null)
+            {
+                return false;
+            }
+
+            var otherHomeTeam = otherFixture.HomeTeam;
+            var otherAwayTeam = otherFixture.AwayTeam;
+            return HomeTeam.Equals(otherHomeTeam) && AwayTeam.Equals(otherAwayTeam);
+        }
     }
 }

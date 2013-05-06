@@ -20,5 +20,20 @@
         {
             get { return _tableGrouping; }
         }
+
+        public override bool Equals(object obj)
+        {
+            var otherTeam = obj as Team;
+            if (otherTeam == null)
+            {
+                return false;
+            }
+            return _name == otherTeam.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return _name.GetHashCode();
+        }
     }
 }
